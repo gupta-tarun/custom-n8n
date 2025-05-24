@@ -1,19 +1,15 @@
 FROM n8nio/n8n
 
+USER root
+RUN apk --no-cache add python3 ffmpeg imagemagick-dev imagemagick py3-pip
+RUN npm install -g baileys lodash baileys bcrypt body-parser 
+
+USER node
+
+RUN python3 -m pip install --user --break-system-packages pipx
 # Set the working directory inside the container
-WORKDIR /usr/local/bin/n8n
 
-# Install your custom npm packages
-# Replace 'your-package-name' with the actual package names you want to install
-# You can add multiple RUN npm install lines or combine them
-RUN npm install baileys
-RUN npm install @actual-app/api # Example with specific version
-RUN npm install lodash
-
-# If you have a package.json for your custom nodes/packages, you can copy it and then install
-# COPY package.json .
-# RUN npm install
-
+ENV = "/home/node/.local/bin:$PATH"
 # Expose the port n8n runs on (default is 5678)
 EXPOSE 5678
 
