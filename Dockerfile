@@ -9,7 +9,7 @@ USER node
 RUN python3 -m pip install --user --break-system-packages pipx
 # Set the working directory inside the container
 
-ENV = "/home/node/.local/bin:$PATH"
+ENV PATH="/home/node/.local/bin:$PATH"
 # Expose the port n8n runs on (default is 5678)
 EXPOSE 5678
 
