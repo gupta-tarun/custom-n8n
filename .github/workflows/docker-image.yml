@@ -39,4 +39,4 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.sha }}
           cache-from: type=gha,scope=build-n8n-ghcr # Enable caching for faster builds
           cache-to: type=gha,mode=max,scope=build-n8n-ghcr
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64
