@@ -1,4 +1,4 @@
-FROM n8n/n8n
+FROM n8nio/n8n
 
 # Set the working directory inside the container
 WORKDIR /usr/local/bin/n8n
