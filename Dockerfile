@@ -58,6 +58,14 @@ RUN apt-get update && apt-get upgrade -y \
 # For example:
 RUN npm install -g n8n@latest --unsafe-perm --allow-root
 
+# RUN npm install -g baileys --unsafe-perm --allow-root
+
+RUN npm install -g lodash --unsafe-perm --allow-root
+
+RUN npm install -g puppeteer --unsafe-perm --allow-root
+
+RUN npm install -g bcrypt --unsafe-perm --allow-root
+
 # Set the user for n8n to run as (often 'node' for node:slim images)
 # USER node
 
