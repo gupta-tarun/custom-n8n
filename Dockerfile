@@ -51,26 +51,24 @@ RUN apt-get update && apt-get upgrade -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Now, install n8n itself and switch to its user
-# This part would replicate how n8n's official Dockerfiles install n8n
-# You'd need to look at their Dockerfile for the exact steps,
-# but it generally involves installing n8n globally with npm.
-# For example:
 RUN npm install -g n8n@latest --unsafe-perm --allow-root
 
 # RUN npm install -g baileys --unsafe-perm --allow-root
 
-RUN npm install -g lodash --unsafe-perm --allow-root
+# RUN useradd -m node
+USER node
 
-RUN npm install -g puppeteer --unsafe-perm --allow-root
+WORKDIR /home/node/.n8n
 
-RUN npm install -g bcrypt --unsafe-perm --allow-root
-
-# Set the user for n8n to run as (often 'node' for node:slim images)
-# USER node
+RUN npm install lodash
+RUN npm install puppeteer
+RUN npm install bcrypt
 
 # Set the working directory, expose port, define entrypoint etc.
-WORKDIR /home/node/.n8n
+
+
+# ENV PATH="/usr/local/bin:${PATH}" 
+# ENV NODE_PATH="/usr/local/lib/node_modules"
 
 EXPOSE 5678
 ENTRYPOINT ["n8n"]
