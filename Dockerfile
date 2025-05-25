@@ -1,24 +1,68 @@
-FROM n8nio/n8n
+# Example: Build on a Debian-based Node.js image
+# Or node:18-slim-bullseye, etc. bullseye is Debian 11
+FROM node:20-slim
 
-USER root
-RUN apk --no-cache add python3 ffmpeg imagemagick-dev imagemagick py3-pip
 
-RUN apk --no-cache add ca-certificates fonts-liberation libasound2 libatk-bridge2.0-0 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgbm1 libgcc1 libglib2.0-0 libgtk-3-0 libnspr4 libnss3 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 xdg-utils wget
-    # Additional common dependencies for Chrome on Linux that might not be in your initial list
-    # but are often helpful or required:
-    # Clean up apt caches to keep image size down
+# Install necessary system dependencies for Chrome/Chromium
+# Use apt-get here as it's a Debian base
+RUN apt-get update && apt-get upgrade -y \
+    && apt-get install -y \
+    ca-certificates \
+    fonts-liberation \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libatk1.0-0 \
+    libc6 \
+    libcairo2 \
+    libcups2 \
+    libdbus-1-3 \
+    libexpat1 \
+    libfontconfig1 \
+    libgbm1 \
+    libgcc1 \
+    libglib2.0-0 \
+    libgtk-3-0 \
+    libnspr4 \
+    libnss3 \
+    libpango-1.0-0 \
+    libpangocairo-1.0-0 \
+    libstdc++6 \
+    libx11-6 \
+    libx11-xcb1 \
+    libxcb1 \
+    libxcomposite1 \
+    libxcursor1 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libxi6 \
+    libxrandr2 \
+    libxrender1 \
+    libxss1 \
+    libxtst6 \
+    xdg-utils \
+    wget \
+    gconf-service \
+    libappindicator1 \
+    libnss3-dev \
+    libxkbcommon0 \
+    lsb-release \
+    # Clean up apt caches
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g baileys lodash baileys bcrypt body-parser puppeteer
+# Now, install n8n itself and switch to its user
+# This part would replicate how n8n's official Dockerfiles install n8n
+# You'd need to look at their Dockerfile for the exact steps,
+# but it generally involves installing n8n globally with npm.
+# For example:
+RUN npm install -g n8n@latest --unsafe-perm --allow-root
 
-USER node
+# Set the user for n8n to run as (often 'node' for node:slim images)
+# USER node
 
-RUN python3 -m pip install --user --break-system-packages pipx
-# Set the working directory inside the container
+# Set the working directory, expose port, define entrypoint etc.
+WORKDIR /home/node/.n8n
 
-ENV PATH="/home/node/.local/bin:$PATH"
-# Expose the port n8n runs on (default is 5678)
 EXPOSE 5678
-
-# The default command to run n8n will be inherited from the base image,
-# but you can override it if necessary.
-# CMD ["n8n", "start"]
+ENTRYPOINT ["n8n"]
