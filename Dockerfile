@@ -2,7 +2,7 @@ FROM n8nio/n8n
 
 USER root
 RUN apk --no-cache add python3 ffmpeg imagemagick-dev imagemagick py3-pip
-RUN npm install -g baileys lodash baileys bcrypt body-parser 
+RUN npm install -g baileys lodash baileys bcrypt body-parser puppeteer
 
 USER node
 
